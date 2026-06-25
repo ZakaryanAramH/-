@@ -1,0 +1,1259 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ООО АйсМаркет</title>
+  <style>
+    :root {
+      --ink: #14212f;
+      --muted: #5b6b7c;
+      --blue: #0f4c81;
+      --blue-dark: #0b2f52;
+      --ice: #eef8ff;
+      --line: #d8e5ee;
+      --teal: #0c8f8f;
+      --berry: #b21f4b;
+      --amber: #f2a900;
+      --white: #ffffff;
+      --shadow: 0 18px 50px rgba(16, 42, 67, 0.14);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: #f5f9fc;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.55;
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(255, 255, 255, 0.94);
+      border-bottom: 1px solid rgba(216, 229, 238, 0.95);
+      box-shadow: 0 10px 30px rgba(16, 42, 67, 0.1);
+      backdrop-filter: blur(14px);
+    }
+
+    .header-inner {
+      width: min(1280px, calc(100% - 48px));
+      margin: 0 auto;
+      padding: 18px 0;
+    }
+
+    .brand-row {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .company-name {
+      margin: 0;
+      color: var(--blue);
+      font-size: 38px;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .temperature-badge {
+      flex: 0 0 auto;
+      padding: 8px 12px;
+      color: var(--blue-dark);
+      background: var(--ice);
+      border: 1px solid #cfe6f6;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .tabs {
+      display: grid;
+      grid-template-rows: 0fr;
+      margin-top: 0;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-14px) scaleY(0.96);
+      transform-origin: top;
+      visibility: hidden;
+      transition:
+        grid-template-rows 1s cubic-bezier(0.16, 1, 0.3, 1),
+        margin-top 1s cubic-bezier(0.16, 1, 0.3, 1),
+        opacity 1s ease,
+        transform 1s cubic-bezier(0.16, 1, 0.3, 1),
+        visibility 0s linear 1s;
+      will-change: grid-template-rows, opacity, transform;
+    }
+
+    .tabs-content {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .site-header:hover .tabs,
+    .site-header:focus-within .tabs {
+      grid-template-rows: 1fr;
+      margin-top: 18px;
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0) scaleY(1);
+      visibility: visible;
+      transition:
+        grid-template-rows 1s cubic-bezier(0.16, 1, 0.3, 1),
+        margin-top 1s cubic-bezier(0.16, 1, 0.3, 1),
+        opacity 1s ease,
+        transform 1s cubic-bezier(0.16, 1, 0.3, 1),
+        visibility 0s;
+    }
+
+    .tab-link,
+    .tab-button {
+      display: inline-flex;
+      align-items: center;
+      min-height: 56px;
+      padding: 10px 18px;
+      color: #16334b;
+      background: #eef6fb;
+      border: 1px solid #c9dbe9;
+      border-radius: 8px;
+      font-family: inherit;
+      text-decoration: none;
+      font-size: 30px;
+      font-weight: 650;
+      cursor: pointer;
+      transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .tab-link:hover,
+    .tab-link:focus,
+    .tab-button:hover,
+    .tab-button:focus {
+      color: var(--white);
+      background: var(--blue);
+      border-color: var(--blue);
+      outline: none;
+    }
+
+    .hero {
+      position: relative;
+      min-height: 620px;
+      display: grid;
+      align-items: center;
+      overflow: hidden;
+      background-image:
+        linear-gradient(90deg, rgba(6, 31, 53, 0.92) 0%, rgba(6, 31, 53, 0.72) 42%, rgba(6, 31, 53, 0.12) 74%),
+        url("./assets/hero-cold-chain.png");
+      background-position: center;
+      background-size: cover;
+    }
+
+    body.hero-image-missing .hero {
+      background-image:
+        linear-gradient(90deg, rgba(6, 31, 53, 0.94) 0%, rgba(6, 31, 53, 0.78) 52%, rgba(6, 31, 53, 0.5) 100%),
+        linear-gradient(135deg, #d8f4ff 0%, #f7fbfe 42%, #9dcce7 100%);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto 0 0;
+      height: 120px;
+      background: linear-gradient(180deg, rgba(245, 249, 252, 0), #f5f9fc);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      width: min(1280px, calc(100% - 48px));
+      margin: 0 auto;
+      padding: 70px 0 92px;
+      color: var(--white);
+    }
+
+    .hero-kicker {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 5px 12px;
+      color: #052236;
+      background: #d8f4ff;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0;
+    }
+
+    .hero h2 {
+      max-width: 760px;
+      margin: 22px 0 18px;
+      font-size: clamp(42px, 5vw, 72px);
+      line-height: 1.02;
+      letter-spacing: 0;
+    }
+
+    .hero p {
+      max-width: 640px;
+      margin: 0;
+      color: #e5f4fb;
+      font-size: 22px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 34px;
+    }
+
+    .primary-action,
+    .secondary-action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 54px;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font: inherit;
+      font-size: 18px;
+      font-weight: 800;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .primary-action {
+      color: var(--white);
+      background: var(--berry);
+      border: 1px solid var(--berry);
+    }
+
+    .secondary-action {
+      color: var(--white);
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.42);
+    }
+
+    .primary-action:hover,
+    .primary-action:focus,
+    .secondary-action:hover,
+    .secondary-action:focus {
+      outline: 3px solid rgba(216, 244, 255, 0.34);
+    }
+
+    .hero-facts {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      max-width: 760px;
+      margin-top: 46px;
+    }
+
+    .fact {
+      padding: 16px;
+      background: rgba(255, 255, 255, 0.13);
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      border-radius: 8px;
+      backdrop-filter: blur(8px);
+    }
+
+    .fact strong {
+      display: block;
+      color: #ffffff;
+      font-size: 26px;
+      line-height: 1.1;
+    }
+
+    .fact span {
+      display: block;
+      margin-top: 6px;
+      color: #d7eaf4;
+      font-size: 15px;
+      font-weight: 650;
+    }
+
+    main {
+      position: relative;
+      z-index: 2;
+    }
+
+    .section {
+      padding: 70px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .section:first-child {
+      border-top: 0;
+    }
+
+    .band {
+      background: var(--white);
+    }
+
+    .section-inner {
+      width: min(1180px, calc(100% - 48px));
+      margin: 0 auto;
+    }
+
+    .section-title {
+      max-width: 760px;
+      margin: 0 0 28px;
+    }
+
+    .section-title h2 {
+      margin: 0 0 12px;
+      color: #102a43;
+      font-size: 36px;
+      letter-spacing: 0;
+      line-height: 1.15;
+    }
+
+    .section-title p,
+    .section p,
+    .section li {
+      color: var(--muted);
+      font-size: 20px;
+    }
+
+    .feature-grid,
+    .section-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 24px;
+    }
+
+    .feature-card,
+    .info-block {
+      padding: 26px;
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 12px 30px rgba(16, 42, 67, 0.06);
+    }
+
+    .feature-card {
+      display: grid;
+      gap: 12px;
+      min-height: 180px;
+    }
+
+    .mark {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      color: var(--white);
+      background: var(--blue);
+      border-radius: 8px;
+      font-size: 20px;
+      font-weight: 900;
+    }
+
+    .mark.teal {
+      background: var(--teal);
+    }
+
+    .mark.berry {
+      background: var(--berry);
+    }
+
+    .mark.amber {
+      color: #3c2c00;
+      background: var(--amber);
+    }
+
+    .feature-card h3,
+    .info-block h3 {
+      margin: 0;
+      color: #0f4c81;
+      font-size: 24px;
+      letter-spacing: 0;
+    }
+
+    .feature-card p,
+    .info-block p,
+    .info-block ul {
+      margin: 0;
+    }
+
+    .info-block ul {
+      padding-left: 22px;
+    }
+
+    .assortment-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 0.92fr) minmax(360px, 1.08fr);
+      gap: 36px;
+      align-items: center;
+    }
+
+    .assortment-image {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 11;
+      object-fit: cover;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .assortment-image.is-fallback {
+      object-fit: contain;
+      padding: 24px;
+      background: linear-gradient(135deg, #eef8ff, #ffffff);
+    }
+
+    .assortment-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      padding: 0;
+      margin: 28px 0 0;
+      list-style: none;
+    }
+
+    .assortment-list li,
+    .cities li {
+      padding: 14px 16px;
+      color: #17364f;
+      background: #f7fbfe;
+      border: 1px solid var(--line);
+      border-left: 5px solid var(--teal);
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: 750;
+    }
+
+    .process-strip {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 28px;
+    }
+
+    .process-step {
+      padding: 20px;
+      background: #f7fbfe;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    .process-step span {
+      color: var(--berry);
+      font-size: 15px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .process-step h3 {
+      margin: 8px 0 0;
+      color: #0f4c81;
+      font-size: 22px;
+      letter-spacing: 0;
+    }
+
+    .address-block {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(240px, 0.42fr);
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .address-highlight {
+      display: grid;
+      place-items: center;
+      min-height: 190px;
+      padding: 26px;
+      color: #09263d;
+      background:
+        linear-gradient(135deg, rgba(216, 244, 255, 0.9), rgba(255, 255, 255, 0.9)),
+        repeating-linear-gradient(45deg, rgba(15, 76, 129, 0.1) 0 2px, transparent 2px 12px);
+      border: 1px solid #cfe6f6;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 26px;
+      font-weight: 900;
+    }
+
+    .cities {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      padding: 0;
+      margin: 18px 0 0;
+      list-style: none;
+    }
+
+    .cities li {
+      border-left-color: var(--blue);
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(16, 42, 67, 0.58);
+    }
+
+    .modal.is-open {
+      display: flex;
+    }
+
+    .modal-window {
+      width: min(560px, 100%);
+      max-height: calc(100vh - 48px);
+      overflow-y: auto;
+      padding: 28px;
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 24px 80px rgba(16, 42, 67, 0.24);
+    }
+
+    .modal-header {
+      display: flex;
+      gap: 18px;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 22px;
+    }
+
+    .modal-title {
+      margin: 0;
+      color: #102a43;
+      font-size: 30px;
+      letter-spacing: 0;
+    }
+
+    .modal-close {
+      flex: 0 0 auto;
+      width: 42px;
+      height: 42px;
+      color: #183247;
+      background: #eef5fb;
+      border: 1px solid #c9dbe9;
+      border-radius: 8px;
+      font-size: 28px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .modal-close:hover,
+    .modal-close:focus {
+      color: var(--white);
+      background: var(--blue);
+      border-color: var(--blue);
+      outline: none;
+    }
+
+    .application-form {
+      display: grid;
+      gap: 18px;
+    }
+
+    .form-field {
+      display: grid;
+      gap: 8px;
+    }
+
+    .form-field label {
+      color: #183247;
+      font-size: 20px;
+      font-weight: 750;
+    }
+
+    .form-field input {
+      width: 100%;
+      min-height: 52px;
+      padding: 10px 14px;
+      color: var(--ink);
+      background: #f8fbfd;
+      border: 1px solid #c9dbe9;
+      border-radius: 8px;
+      font: inherit;
+      font-size: 18px;
+    }
+
+    .form-field input:focus {
+      border-color: var(--blue);
+      outline: 3px solid rgba(15, 76, 129, 0.16);
+    }
+
+    .form-field input[type="file"] {
+      padding: 12px;
+      background: var(--white);
+    }
+
+    .form-submit {
+      min-height: 54px;
+      padding: 12px 18px;
+      color: var(--white);
+      background: var(--blue);
+      border: 1px solid var(--blue);
+      border-radius: 8px;
+      font: inherit;
+      font-size: 20px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .form-submit:hover,
+    .form-submit:focus {
+      background: var(--blue-dark);
+      border-color: var(--blue-dark);
+      outline: none;
+    }
+
+    .form-submit:disabled {
+      cursor: wait;
+      opacity: 0.72;
+    }
+
+    .form-message {
+      display: none;
+      margin: 0;
+      padding: 14px 16px;
+      color: #183247;
+      background: var(--ice);
+      border: 1px solid #c9dbe9;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: 650;
+    }
+
+    .form-message.is-visible {
+      display: block;
+    }
+
+    .form-message.is-error {
+      color: #7f1d1d;
+      background: #fff1f2;
+      border-color: #fecdd3;
+    }
+
+    @media (max-width: 1000px) {
+      .assortment-layout,
+      .address-block,
+      .feature-grid,
+      .section-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .process-strip,
+      .cities {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 900px) {
+      .hero {
+        min-height: 560px;
+        background-image:
+          linear-gradient(90deg, rgba(6, 31, 53, 0.92), rgba(6, 31, 53, 0.62)),
+          url("./assets/hero-cold-chain.png");
+      }
+
+      .hero-facts {
+        grid-template-columns: 1fr;
+      }
+
+      .company-name {
+        font-size: 32px;
+      }
+
+      .tab-link,
+      .tab-button {
+        width: 100%;
+        font-size: 24px;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .header-inner,
+      .hero-content,
+      .section-inner {
+        width: min(100% - 28px, 1180px);
+      }
+
+      .brand-row {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .company-name {
+        font-size: 28px;
+      }
+
+      .temperature-badge {
+        font-size: 14px;
+      }
+
+      .tab-link,
+      .tab-button {
+        min-height: 50px;
+        padding: 10px 14px;
+        font-size: 20px;
+      }
+
+      .hero {
+        min-height: auto;
+      }
+
+      .hero-content {
+        padding: 58px 0 74px;
+      }
+
+      .hero h2 {
+        font-size: 38px;
+      }
+
+      .hero p,
+      .section-title p,
+      .section p,
+      .section li {
+        font-size: 18px;
+      }
+
+      .section {
+        padding: 52px 0;
+      }
+
+      .section-title h2 {
+        font-size: 30px;
+      }
+
+      .assortment-list,
+      .process-strip,
+      .cities {
+        grid-template-columns: 1fr;
+      }
+
+      .primary-action,
+      .secondary-action {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand-row">
+        <h1 class="company-name">ООО АйсМаркет</h1>
+        <span class="temperature-badge">Холодная цепь от склада до клиента</span>
+      </div>
+      <nav class="tabs" aria-label="Разделы сайта">
+        <div class="tabs-content">
+          <a class="tab-link" href="#about">О компании</a>
+          <a class="tab-link" href="#partners">О сотрудничестве</a>
+          <a class="tab-link" href="#address">Юридический адрес</a>
+          <a class="tab-link" href="#jobs">Вакансии и трудоустройство</a>
+          <a class="tab-link" href="#delivery">Города доставки</a>
+          <button class="tab-button" type="button" id="openApplication">Оставить заявку</button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero-content">
+      <span class="hero-kicker">Замороженная продукция для бизнеса</span>
+      <h2 id="hero-title">Поставки, которые сохраняют свежесть до точки продажи</h2>
+      <p>
+        АйсМаркет поставляет замороженные и охлажденные товары для магазинов, кафе,
+        ресторанов и оптовых клиентов с контролем температуры на каждом этапе маршрута.
+      </p>
+      <div class="hero-actions">
+        <button class="primary-action" type="button" id="openApplicationHero">Оставить заявку на работу</button>
+        <a class="secondary-action" href="#assortment">Посмотреть ассортимент</a>
+      </div>
+      <div class="hero-facts" aria-label="Преимущества компании">
+        <div class="fact">
+          <strong>-18°C</strong>
+          <span>режим для замороженных товаров</span>
+        </div>
+        <div class="fact">
+          <strong>B2B</strong>
+          <span>поставки для торговли и общепита</span>
+        </div>
+        <div class="fact">
+          <strong>24/7</strong>
+          <span>планирование заявок и маршрутов</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main>
+    <section class="section" id="about" aria-labelledby="about-title">
+      <div class="section-inner">
+        <div class="section-title">
+          <h2 id="about-title">О компании</h2>
+          <p>
+            ООО АйсМаркет работает с продукцией, которой важны аккуратное хранение,
+            понятные сроки поставки и стабильный температурный режим.
+          </p>
+        </div>
+        <div class="feature-grid">
+          <article class="feature-card">
+            <span class="mark">1</span>
+            <h3>Холодная логистика</h3>
+            <p>
+              Используем рефрижераторную доставку и контролируем условия перевозки,
+              чтобы товар приезжал к клиенту в правильном состоянии.
+            </p>
+          </article>
+          <article class="feature-card">
+            <span class="mark teal">2</span>
+            <h3>Поставки для бизнеса</h3>
+            <p>
+              Работаем с магазинами, ресторанами, кафе, складами и оптовыми покупателями,
+              которым нужны регулярность и предсказуемость.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section band" id="assortment" aria-labelledby="assortment-title">
+      <div class="section-inner assortment-layout">
+        <div>
+          <div class="section-title">
+            <h2 id="assortment-title">Ассортимент замороженной продукции</h2>
+            <p>
+              Подбираем позиции под формат клиента: от базовых товаров ежедневного спроса
+              до продукции для кухни, витрин и сезонных продаж.
+            </p>
+          </div>
+          <ul class="assortment-list">
+            <li>Замороженные овощи и ягоды</li>
+            <li>Полуфабрикаты</li>
+            <li>Мороженое и десерты</li>
+            <li>Рыба и морепродукты</li>
+            <li>Охлажденные продукты</li>
+            <li>Товары для опта</li>
+          </ul>
+        </div>
+        <img
+          class="assortment-image"
+          src="./assets/frozen-products.png"
+          alt="Ассортимент замороженных продуктов для поставок АйсМаркет"
+        >
+      </div>
+    </section>
+
+    <section class="section" id="partners" aria-labelledby="partners-title">
+      <div class="section-inner">
+        <div class="section-title">
+          <h2 id="partners-title">О сотрудничестве</h2>
+          <p>
+            Сотрудничество строится вокруг стабильного графика, понятного ассортимента
+            и аккуратной работы с продуктами, требующими холода.
+          </p>
+        </div>
+        <div class="section-grid">
+          <article class="info-block">
+            <span class="mark berry">К</span>
+            <h3>Для клиентов</h3>
+            <p>
+              Предлагаем регулярные поставки, индивидуальный подбор ассортимента и
+              согласование графика доставки под потребности вашего бизнеса.
+            </p>
+          </article>
+          <article class="info-block">
+            <span class="mark amber">П</span>
+            <h3>Для поставщиков</h3>
+            <p>
+              Рассматриваем предложения производителей и дистрибьюторов, готовых
+              обеспечить стабильное качество и прозрачные условия работы.
+            </p>
+          </article>
+        </div>
+        <div class="process-strip" aria-label="Этапы работы">
+          <article class="process-step">
+            <span>этап 01</span>
+            <h3>Заявка</h3>
+          </article>
+          <article class="process-step">
+            <span>этап 02</span>
+            <h3>Подбор товара</h3>
+          </article>
+          <article class="process-step">
+            <span>этап 03</span>
+            <h3>Согласование маршрута</h3>
+          </article>
+          <article class="process-step">
+            <span>этап 04</span>
+            <h3>Доставка</h3>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section band" id="address" aria-labelledby="address-title">
+      <div class="section-inner">
+        <div class="section-title">
+          <h2 id="address-title">Юридический адрес</h2>
+          <p>Реквизиты можно заменить на актуальные данные компании, когда они будут готовы.</p>
+        </div>
+        <div class="address-block">
+          <div class="info-block">
+            <h3>ООО АйсМаркет</h3>
+            <p>
+              г. Москва, вн.тер.г. Муниципальный округ Хорошевский, ш. Хорошёвское, д. 38, помещ. 506
+            </p>
+          </div>
+          <div class="address-highlight">Документы и реквизиты</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="jobs" aria-labelledby="jobs-title">
+      <div class="section-inner">
+        <div class="section-title">
+          <h2 id="jobs-title">Вакансии и трудоустройство</h2>
+          <p>
+            В команде важны внимательность к товару, ответственность на маршруте
+            и аккуратная работа с клиентами.
+          </p>
+        </div>
+        <div class="section-grid">
+          <article class="info-block">
+            <h3>Кого ищем</h3>
+            <ul>
+              <li>Водителей-экспедиторов</li>
+              <li>Кладовщиков</li>
+              <li>Менеджеров по работе с клиентами</li>
+            </ul>
+          </article>
+          <article class="info-block">
+            <h3>Как устроиться</h3>
+            <p>
+              Нажмите «Оставить заявку», заполните ФИО, номер телефона и прикрепите
+              резюме. Данные сохранятся в папку с именем заявителя.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section band" id="delivery" aria-labelledby="delivery-title">
+      <div class="section-inner">
+        <div class="section-title">
+          <h2 id="delivery-title">Города доставки</h2>
+          <p>
+            Компания доставляет товары в крупные города и населенные пункты по
+            согласованному маршруту.
+          </p>
+        </div>
+        <ul class="cities">
+          <li>Москва</li>
+          <li>Санкт-Петербург</li>
+          <li>Тверь</li>
+          <li>Ярославль</li>
+          <li>Владимир</li>
+          <li>Нижний Новгород</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal" id="applicationModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="applicationTitle">
+    <div class="modal-window">
+      <div class="modal-header">
+        <h2 class="modal-title" id="applicationTitle">Заявка на трудоустройство</h2>
+        <button class="modal-close" type="button" id="closeApplication" aria-label="Закрыть окно">&times;</button>
+      </div>
+
+      <form class="application-form" id="applicationForm">
+        <div class="form-field">
+          <label for="fullName">ФИО</label>
+          <input id="fullName" name="fullName" type="text" autocomplete="name" required>
+        </div>
+
+        <div class="form-field">
+          <label for="phone">Номер телефона</label>
+          <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" required>
+        </div>
+
+        <div class="form-field">
+          <label for="resume">Прикрепить резюме</label>
+          <input id="resume" name="resume" type="file" accept=".pdf,.doc,.docx,.rtf,.txt">
+        </div>
+
+        <button class="form-submit" type="submit">Отправить заявку</button>
+        <p class="form-message" id="formMessage" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const openApplication = document.getElementById("openApplication");
+    const openApplicationHero = document.getElementById("openApplicationHero");
+    const closeApplication = document.getElementById("closeApplication");
+    const applicationModal = document.getElementById("applicationModal");
+    const applicationForm = document.getElementById("applicationForm");
+    const formMessage = document.getElementById("formMessage");
+    const fullName = document.getElementById("fullName");
+    const phone = document.getElementById("phone");
+    const resume = document.getElementById("resume");
+    const submitButton = applicationForm.querySelector(".form-submit");
+    let lastModalTrigger = openApplication;
+
+    const productFallbackSvg = encodeURIComponent(`
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 620">
+        <defs>
+          <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+            <stop stop-color="#eef8ff"/>
+            <stop offset="1" stop-color="#ffffff"/>
+          </linearGradient>
+        </defs>
+        <rect width="900" height="620" fill="url(#bg)"/>
+        <rect x="120" y="120" width="270" height="190" rx="22" fill="#ffffff" stroke="#0f4c81" stroke-width="12"/>
+        <rect x="450" y="95" width="220" height="250" rx="26" fill="#d8f4ff" stroke="#0c8f8f" stroke-width="12"/>
+        <rect x="245" y="360" width="430" height="120" rx="22" fill="#ffffff" stroke="#b21f4b" stroke-width="12"/>
+        <circle cx="205" cy="220" r="32" fill="#b21f4b"/>
+        <circle cx="285" cy="220" r="32" fill="#0c8f8f"/>
+        <circle cx="560" cy="220" r="70" fill="#f2a900" opacity="0.85"/>
+        <path d="M330 420h260M330 452h190" stroke="#0f4c81" stroke-width="16" stroke-linecap="round"/>
+        <path d="M735 190v170M650 275h170M700 218l70 114M770 218l-70 114" stroke="#9dcce7" stroke-width="14" stroke-linecap="round"/>
+      </svg>
+    `);
+
+    function setupImageFallbacks() {
+      const heroTestImage = new Image();
+      const assortmentImage = document.querySelector(".assortment-image");
+
+      heroTestImage.onerror = () => {
+        document.body.classList.add("hero-image-missing");
+      };
+      heroTestImage.src = "./assets/hero-cold-chain.png";
+
+      if (assortmentImage) {
+        assortmentImage.addEventListener("error", () => {
+          assortmentImage.classList.add("is-fallback");
+          assortmentImage.src = `data:image/svg+xml;charset=UTF-8,${productFallbackSvg}`;
+        }, { once: true });
+      }
+    }
+
+    function showMessage(text, isError = false) {
+      formMessage.textContent = text;
+      formMessage.classList.add("is-visible");
+      formMessage.classList.toggle("is-error", isError);
+    }
+
+    function openModal(trigger = openApplication) {
+      lastModalTrigger = trigger;
+      applicationModal.classList.add("is-open");
+      applicationModal.setAttribute("aria-hidden", "false");
+      formMessage.classList.remove("is-visible");
+      fullName.focus();
+    }
+
+    function closeModal() {
+      applicationModal.classList.remove("is-open");
+      applicationModal.setAttribute("aria-hidden", "true");
+      lastModalTrigger.focus();
+    }
+
+    openApplication.addEventListener("click", () => openModal(openApplication));
+    openApplicationHero.addEventListener("click", () => openModal(openApplicationHero));
+    closeApplication.addEventListener("click", closeModal);
+
+    applicationModal.addEventListener("click", (event) => {
+      if (event.target === applicationModal) {
+        closeModal();
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && applicationModal.classList.contains("is-open")) {
+        closeModal();
+      }
+    });
+
+    function readFileAsBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onload = () => {
+          const result = String(reader.result);
+          const base64 = result.includes(",") ? result.split(",")[1] : result;
+
+          resolve({
+            name: file.name,
+            type: file.type,
+            data: base64,
+          });
+        };
+
+        reader.onerror = () => reject(new Error("Не удалось прочитать файл резюме."));
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function isLocalApplicationServer() {
+      return ["localhost", "127.0.0.1", "[::1]"].includes(window.location.hostname);
+    }
+
+    function sanitizeFolderName(value) {
+      const safeName = String(value || "")
+        .trim()
+        .replace(/[<>:"/\\|?*\x00-\x1f]/g, "_")
+        .replace(/\s+/g, " ")
+        .replace(/[. ]+$/g, "");
+
+      return safeName || "Заявитель";
+    }
+
+    function getFileExtension(fileName) {
+      const match = String(fileName || "").match(/\.[^.]+$/);
+      return match ? match[0] : "";
+    }
+
+    function createApplicantDataText(application) {
+      return [
+        `ФИО: ${application.fullName}`,
+        `Номер телефона: ${application.phone}`,
+        "",
+      ].join("\n");
+    }
+
+    async function writeFileToDirectory(directoryHandle, fileName, data) {
+      const fileHandle = await directoryHandle.getFileHandle(fileName, { create: true });
+      const writable = await fileHandle.createWritable();
+      await writable.write(data);
+      await writable.close();
+    }
+
+    function downloadBlob(blob, fileName) {
+      const link = document.createElement("a");
+      const url = URL.createObjectURL(blob);
+
+      link.href = url;
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
+
+    async function saveApplicationInBrowser(application, resumeFile) {
+      const folderName = sanitizeFolderName(application.fullName);
+      const applicantDataBlob = new Blob([createApplicantDataText(application)], {
+        type: "text/plain;charset=utf-8",
+      });
+
+      if ("showDirectoryPicker" in window) {
+        const rootHandle = await window.showDirectoryPicker({ mode: "readwrite" });
+        const applicantFolder = await rootHandle.getDirectoryHandle(folderName, { create: true });
+
+        await writeFileToDirectory(applicantFolder, "Данные о заявителе.txt", applicantDataBlob);
+
+        if (resumeFile) {
+          await writeFileToDirectory(applicantFolder, `Резумэ${getFileExtension(resumeFile.name)}`, resumeFile);
+        }
+
+        return "folder";
+      }
+
+      downloadBlob(applicantDataBlob, `${folderName} - Данные о заявителе.txt`);
+
+      if (resumeFile) {
+        downloadBlob(resumeFile, `${folderName} - Резумэ${getFileExtension(resumeFile.name)}`);
+      }
+
+      return "downloads";
+    }
+
+    async function saveApplicationOnLocalServer(application, resumeFile) {
+      const resumeFileData = resumeFile ? await readFileAsBase64(resumeFile) : null;
+
+      const response = await fetch("/api/applications", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          fullName: application.fullName,
+          phone: application.phone,
+          resume: resumeFileData,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || "Не удалось сохранить заявку.");
+      }
+    }
+
+    applicationForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const application = {
+        fullName: fullName.value.trim(),
+        phone: phone.value.trim(),
+      };
+      const resumeFile = resume.files[0] || null;
+
+      submitButton.disabled = true;
+      submitButton.textContent = "Отправка...";
+
+      try {
+        if (isLocalApplicationServer()) {
+          await saveApplicationOnLocalServer(application, resumeFile);
+          applicationForm.reset();
+          showMessage("Спасибо! Заявка сохранена в папку applications по ФИО заявителя.");
+        } else {
+          const saveMode = await saveApplicationInBrowser(application, resumeFile);
+
+          applicationForm.reset();
+          showMessage(
+            saveMode === "folder"
+              ? "Спасибо! Заявка сохранена в выбранную папку по ФИО заявителя."
+              : "Спасибо! Файлы заявки скачаны. Поместите их в папку с ФИО заявителя."
+          );
+        }
+      } catch (error) {
+        const message = error.name === "AbortError"
+          ? "Сохранение отменено. Чтобы сохранить заявку, выберите папку."
+          : error.message || "Не удалось сохранить заявку.";
+
+        showMessage(message, true);
+      } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = "Отправить заявку";
+      }
+    });
+
+    setupImageFallbacks();
+  </script>
+</body>
+</html>
